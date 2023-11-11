@@ -45,3 +45,17 @@ footer {
     font-size: 0.75em;
     margin-top: 100px;
 }
+
+.resume-download {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    text-decoration: none; /* No underline */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.resume-download:hover {
+    background-color: #45a049; /* Darker green background on hover */
+}
