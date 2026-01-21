@@ -1,486 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AndyCyberLife - Cybersecurity Insights & Analysis</title>
-    <meta name="description" content="Cybersecurity professional sharing insights on threat analysis, security tools, industry trends, and practical defense strategies.">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+---
+layout: default
+---
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-            color: #e2e8f0;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+<section class="hero">
+    <h2>Welcome to AndyCyberLife</h2>
+    <p>{{ site.description }}</p>
+    <div class="social-links">
+        {% if site.github_username %}
+        <a href="https://github.com/{{ site.github_username }}" target="_blank" title="GitHub">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        {% endif %}
+        <a href="{{ '/feed.xml' | relative_url }}" title="RSS Feed">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.71-7.118-15.758-15.839-15.82zm0-3.368c10.58.046 19.152 8.594 19.183 19.188h4.817c-.03-13.231-10.755-23.954-24-24v4.812z"/></svg>
+        </a>
+    </div>
+</section>
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+<div class="category-filter">
+    <button class="category-btn active" data-category="all">All</button>
+    <button class="category-btn" data-category="Threat Analysis">Threat Analysis</button>
+    <button class="category-btn" data-category="Security Tools">Security Tools</button>
+    <button class="category-btn" data-category="Industry News">Industry News</button>
+    <button class="category-btn" data-category="Tutorials">Tutorials</button>
+    <button class="category-btn" data-category="Office/Azure/Exchange">Office/Azure/Exchange</button>
+</div>
 
-        /* Header */
-        header {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(71, 85, 105, 0.5);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+<div class="posts-grid">
+    {% for post in site.posts %}
+    <article class="post-card {% if post.featured %}featured{% endif %}" data-categories="{{ post.categories | join: ',' }}">
+        {% if post.featured %}
+        <span class="featured-badge">Featured</span>
+        {% endif %}
+        <h3 class="post-title">
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </h3>
+        <div class="post-meta">
+            <span>📅 {{ post.date | date: "%b %d, %Y" }}</span>
+            {% if post.read_time %}
+            <span>⏱️ {{ post.read_time }} min read</span>
+            {% endif %}
+        </div>
+        <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+        <div class="post-tags">
+            {% for tag in post.tags %}
+            <span class="tag">#{{ tag }}</span>
+            {% endfor %}
+        </div>
+        <a href="{{ post.url | relative_url }}" class="read-more">Read more →</a>
+    </article>
+    {% endfor %}
+</div>
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-
-        .logo-text h1 {
-            font-size: 1.25rem;
-            color: #e2e8f0;
-        }
-
-        .logo-text p {
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
-
-        nav ul {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        nav a {
-            color: #cbd5e1;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #60a5fa;
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
-        }
-
-        .hero h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 1.125rem;
-            color: #94a3b8;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            background: rgba(51, 65, 85, 0.5);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: #cbd5e1;
-        }
-
-        .social-links a:hover {
-            background: rgba(71, 85, 105, 0.7);
-            transform: translateY(-2px);
-        }
-
-        /* Category Filter */
-        .category-filter {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .category-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(51, 65, 85, 0.5);
-            border: none;
-            border-radius: 9999px;
-            color: #cbd5e1;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.875rem;
-        }
-
-        .category-btn:hover,
-        .category-btn.active {
-            background: #3b82f6;
-            color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-
-        /* Blog Posts Grid */
-        .posts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .post-card {
-            background: rgba(51, 65, 85, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(71, 85, 105, 0.7);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.3s;
-        }
-
-        .post-card:hover {
-            border-color: rgba(59, 130, 246, 0.5);
-            transform: translateY(-4px);
-        }
-
-        .post-card.featured {
-            grid-column: span 2;
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .featured-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 9999px;
-            margin-bottom: 0.75rem;
-        }
-
-        .post-title {
-            font-size: 1.25rem;
-            color: #e2e8f0;
-            margin-bottom: 0.75rem;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .post-title:hover {
-            color: #60a5fa;
-        }
-
-        .post-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            font-size: 0.875rem;
-            color: #94a3b8;
-            margin-bottom: 1rem;
-        }
-
-        .post-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .post-excerpt {
-            color: #cbd5e1;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .post-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .tag {
-            padding: 0.25rem 0.75rem;
-            background: rgba(71, 85, 105, 0.5);
-            color: #60a5fa;
-            font-size: 0.75rem;
-            border-radius: 9999px;
-        }
-
-        .read-more {
-            color: #60a5fa;
-            font-weight: 500;
-            text-decoration: none;
-            font-size: 0.875rem;
-            transition: color 0.3s;
-        }
-
-        .read-more:hover {
-            color: #93c5fd;
-        }
-
-        /* Load More Button */
-        .load-more {
-            text-align: center;
-            margin: 3rem 0;
-        }
-
-        .load-more-btn {
-            padding: 0.75rem 1.5rem;
-            background: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-
-        .load-more-btn:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-        }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid rgba(71, 85, 105, 0.5);
-            margin-top: 5rem;
-            padding: 2rem 0;
-            text-align: center;
-            color: #94a3b8;
-            font-size: 0.875rem;
-        }
-
-        footer p + p {
-            margin-top: 0.5rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
+<script>
+const categoryBtns = document.querySelectorAll('.category-btn');
+const postCards = document.querySelectorAll('.post-card');
+categoryBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+        const category = this.dataset.category;
+        categoryBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        postCards.forEach(card => {
+            if (category === 'all') {
+                card.style.display = 'block';
+            } else {
+                const categories = card.dataset.categories.split(',');
+                card.style.display = categories.includes(category) ? 'block' : 'none';
             }
-
-            .hero h2 {
-                font-size: 2rem;
-            }
-
-            .posts-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .post-card.featured {
-                grid-column: span 1;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">AC</div>
-                    <div class="logo-text">
-                        <h1>AndyCyberLife</h1>
-                        <p>Security Insights & Analysis</p>
-                    </div>
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#articles">Articles</a></li>
-                        <li><a href="#tools">Tools</a></li>
-                        <li><a href="#about">About</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </header>
-
-    <main class="container">
-        <section class="hero">
-            <h2>Welcome to AndyCyberLife</h2>
-            <p>Cybersecurity professional sharing insights on threat analysis, security tools, industry trends, and practical defense strategies.</p>
-            <div class="social-links">
-                <a href="https://github.com/sinocikid" target="_blank" title="GitHub">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                </a>
-                <a href="#" title="LinkedIn">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                </a>
-                <a href="#" title="Email">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/></svg>
-                </a>
-                <a href="#" title="RSS Feed">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.71-7.118-15.758-15.839-15.82zm0-3.368c10.58.046 19.152 8.594 19.183 19.188h4.817c-.03-13.231-10.755-23.954-24-24v4.812z"/></svg>
-                </a>
-            </div>
-        </section>
-
-        <div class="category-filter">
-            <button class="category-btn active">All</button>
-            <button class="category-btn">Threat Analysis</button>
-            <button class="category-btn">Security Tools</button>
-            <button class="category-btn">Industry News</button>
-            <button class="category-btn">Tutorials</button>
-        </div>
-
-        <div class="posts-grid">
-            <article class="post-card featured">
-                <span class="featured-badge">Featured</span>
-                <h3 class="post-title">Advanced Threat Hunting Techniques for 2026</h3>
-                <div class="post-meta">
-                    <span>📅 Jan 18, 2026</span>
-                    <span>⏱️ 8 min read</span>
-                </div>
-                <p class="post-excerpt">Exploring modern methodologies for proactive threat detection using behavior analytics and AI-assisted hunting in enterprise environments.</p>
-                <div class="post-tags">
-                    <span class="tag">#Threat Analysis</span>
-                    <span class="tag">#SOC</span>
-                </div>
-                <a href="#" class="read-more">Read more →</a>
-            </article>
-
-            <article class="post-card">
-                <h3 class="post-title">Evaluating Next-Gen SIEM Solutions</h3>
-                <div class="post-meta">
-                    <span>📅 Jan 15, 2026</span>
-                    <span>⏱️ 6 min read</span>
-                </div>
-                <p class="post-excerpt">A comprehensive comparison of leading SIEM platforms, focusing on cloud-native capabilities and integration ecosystems.</p>
-                <div class="post-tags">
-                    <span class="tag">#Security Tools</span>
-                    <span class="tag">#Reviews</span>
-                </div>
-                <a href="#" class="read-more">Read more →</a>
-            </article>
-
-            <article class="post-card">
-                <h3 class="post-title">The Evolution of Ransomware Tactics</h3>
-                <div class="post-meta">
-                    <span>📅 Jan 12, 2026</span>
-                    <span>⏱️ 5 min read</span>
-                </div>
-                <p class="post-excerpt">Analyzing emerging ransomware trends including double extortion, supply chain targeting, and cryptocurrency tracing evasion.</p>
-                <div class="post-tags">
-                    <span class="tag">#Threat Analysis</span>
-                    <span class="tag">#Malware</span>
-                </div>
-                <a href="#" class="read-more">Read more →</a>
-            </article>
-
-            <article class="post-card">
-                <h3 class="post-title">Building a Home Security Lab</h3>
-                <div class="post-meta">
-                    <span>📅 Jan 10, 2026</span>
-                    <span>⏱️ 10 min read</span>
-                </div>
-                <p class="post-excerpt">Step-by-step guide to setting up a virtualized security testing environment using VirtualBox, Kali Linux, and vulnerable VMs.</p>
-                <div class="post-tags">
-                    <span class="tag">#Tutorials</span>
-                    <span class="tag">#Hands-on</span>
-                </div>
-                <a href="#" class="read-more">Read more →</a>
-            </article>
-
-            <article class="post-card">
-                <h3 class="post-title">Zero Trust Architecture: Industry Adoption Report</h3>
-                <div class="post-meta">
-                    <span>📅 Jan 8, 2026</span>
-                    <span>⏱️ 7 min read</span>
-                </div>
-                <p class="post-excerpt">Recent survey insights on Zero Trust implementation challenges and success factors across Fortune 500 companies.</p>
-                <div class="post-tags">
-                    <span class="tag">#Industry News</span>
-                    <span class="tag">#Architecture</span>
-                </div>
-                <a href="#" class="read-more">Read more →</a>
-            </article>
-
-            <article class="post-card">
-                <h3 class="post-title">Top 5 Open Source Security Tools for 2026</h3>
-                <div class="post-meta">
-                    <span>📅 Jan 5, 2026</span>
-                    <span>⏱️ 6 min read</span>
-                </div>
-                <p class="post-excerpt">Curated list of essential open-source security tools for penetration testing, monitoring, and incident response.</p>
-                <div class="post-tags">
-                    <span class="tag">#Security Tools</span>
-                    <span class="tag">#Open Source</span>
-                </div>
-                <a href="#" class="read-more">Read more →</a>
-            </article>
-        </div>
-
-        <div class="load-more">
-            <button class="load-more-btn">Load More Articles</button>
-        </div>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 AndyCyberLife. All rights reserved.</p>
-            <p>Powered by GitHub Pages</p>
-        </div>
-    </footer>
-
-    <script>
-        // Category filter functionality
-        const categoryBtns = document.querySelectorAll('.category-btn');
-        categoryBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                categoryBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            });
         });
-
-        // Load more functionality
-        document.querySelector('.load-more-btn').addEventListener('click', function() {
-            alert('Loading more articles... (This is a demo)');
-        });
-    </script>
-</body>
-</html>
+    });
+});
+</script>
