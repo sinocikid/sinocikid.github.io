@@ -406,83 +406,43 @@ footer p + p {
     }
 }
 
-/* --- Blog Card Styles (Dark Mode / Cyber Style) --- */
+/* =========================================
+   强制覆盖：暗灰色卡片模式 (Dark Grey Theme)
+   ========================================= */
 
-/* 列表容器 */
-.posts-wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px 0;
-}
-
-/* 卡片主体：深色背景 */
+/* 1. 把卡片背景改成深灰色 */
 .post-card {
-  background: #161b22; /* 很深的蓝灰色，类似 GitHub Dark 模式 */
-  border: 1px solid #30363d; /* 深灰色边框 */
-  border-radius: 8px;
-  padding: 24px;
-  margin-bottom: 24px;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5); /* 黑色阴影 */
+    background-color: #2d333b !important; /* GitHub 风格的深灰色 */
+    border: 1px solid #444c56 !important; /* 调整边框颜色以匹配 */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4) !important; /* 加深阴影让它浮起来 */
 }
 
-/* 鼠标悬停：发光效果 */
+/* 鼠标悬停时稍微亮一点，更有交互感 */
 .post-card:hover {
-  transform: translateY(-3px);
-  border-color: #58a6ff; /* 悬停时边框变亮蓝 */
-  box-shadow: 0 0 15px rgba(88, 166, 255, 0.2); /* 蓝色微光 */
+    background-color: #373e47 !important;
+    border-color: #58a6ff !important; /* 悬停时边框变蓝 */
 }
 
-/* 日期标签：深底白字 */
-.post-meta-date {
-  font-size: 0.85rem;
-  color: #8b949e; /* 浅灰色 */
-  font-family: 'Courier New', Courier, monospace;
-  background: #0d1117; /* 比卡片更黑的背景 */
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid #30363d;
-  display: inline-block;
-  margin-bottom: 12px;
-}
-
-/* 标题样式 - 强制亮白色 */
-.post-card-title {
-  margin: 0 0 12px 0;
-  font-size: 1.5rem;
-}
-
+/* 2. 把标题文字改成纯白色 */
 .post-card-title a,
 .post-card-title a:visited {
-  color: #ffffff !important; /* 强制纯白色！ */
-  text-decoration: none;
-  font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8); /* 增加一点文字阴影更清晰 */
+    color: #ffffff !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5); /* 加一点文字阴影增加对比度 */
 }
 
-/* 鼠标悬停标题：变亮蓝 */
-.post-card-title a:hover {
-  color: #58a6ff !important;
-}
-
-/* 摘要文字：浅银灰色 */
+/* 3. 把摘要文字改成浅灰色 */
 .post-card-excerpt {
-  color: #c9d1d9; /* 很好的阅读浅灰色 */
-  line-height: 1.6;
-  font-size: 1rem;
-  margin-bottom: 16px;
+    color: #adbac7 !important; /* 柔和的浅灰色，适合阅读 */
 }
 
-/* 链接按钮：亮蓝色 */
+/* 4. 调整日期小标签的颜色 */
+.post-meta-date {
+    background-color: #22272e !important; /* 比卡片背景再深一点 */
+    color: #adbac7 !important;
+    border: 1px solid #444c56 !important;
+}
+
+/* 5. 确保底部的 "Read Article" 链接是亮蓝色 */
 .read-more-link {
-  color: #58a6ff;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 0.95rem;
-  display: inline-block;
-}
-
-.read-more-link:hover {
-  text-decoration: underline;
-  color: #79c0ff;
+    color: #58a6ff !important;
 }
