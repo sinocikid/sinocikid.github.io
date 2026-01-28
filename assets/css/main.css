@@ -406,76 +406,73 @@ footer p + p {
     }
 }
 
-/* --- Blog Card Styles (Dark Mode / Cyber Style) --- */
+/* --- Blog Card Styles --- */
 
-/* 列表容器 */
+/* 列表容器：限制最大宽度，居中显示 */
 .posts-wrapper {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px 0;
 }
 
-/* 卡片主体：深色背景 */
+/* 卡片主体：白色背景，灰色细边框，圆角 */
 .post-card {
-  background: #161b22; /* 很深的蓝灰色，类似 GitHub Dark 模式 */
-  border: 1px solid #30363d; /* 深灰色边框 */
-  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e1e4e8; /* 浅灰边框 */
+  border-radius: 8px; /* 圆角 */
   padding: 24px;
-  margin-bottom: 24px;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5); /* 黑色阴影 */
+  margin-bottom: 24px; /* 卡片间距 */
+  transition: all 0.2s ease-in-out; /* 动效过渡 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  position: relative;
 }
 
-/* 鼠标悬停：发光效果 */
+/* 鼠标悬停效果：轻微上浮，边框变蓝，阴影加深 */
 .post-card:hover {
   transform: translateY(-3px);
-  border-color: #58a6ff; /* 悬停时边框变亮蓝 */
-  box-shadow: 0 0 15px rgba(88, 166, 255, 0.2); /* 蓝色微光 */
+  border-color: #0366d6; /* 科技蓝 */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-/* 日期标签：深底白字 */
+/* 日期样式：灰色小字 */
 .post-meta-date {
   font-size: 0.85rem;
-  color: #8b949e; /* 浅灰色 */
-  font-family: 'Courier New', Courier, monospace;
-  background: #0d1117; /* 比卡片更黑的背景 */
+  color: #6a737d;
+  font-family: 'Courier New', Courier, monospace; /* 代码风格字体 */
+  background: #f6f8fa;
   padding: 4px 8px;
   border-radius: 4px;
-  border: 1px solid #30363d;
   display: inline-block;
   margin-bottom: 12px;
 }
 
-/* 标题样式 - 强制亮白色 */
+/* 标题样式 */
 .post-card-title {
   margin: 0 0 12px 0;
   font-size: 1.5rem;
 }
 
-.post-card-title a,
-.post-card-title a:visited {
-  color: #ffffff !important; /* 强制纯白色！ */
+.post-card-title a {
+  color: #24292e;
   text-decoration: none;
   font-weight: 700;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8); /* 增加一点文字阴影更清晰 */
 }
 
-/* 鼠标悬停标题：变亮蓝 */
 .post-card-title a:hover {
-  color: #58a6ff !important;
+  color: #0366d6;
 }
 
-/* 摘要文字：浅银灰色 */
+/* 摘要文字样式 */
 .post-card-excerpt {
-  color: #c9d1d9; /* 很好的阅读浅灰色 */
+  color: #586069;
   line-height: 1.6;
   font-size: 1rem;
   margin-bottom: 16px;
 }
 
-/* 链接按钮：亮蓝色 */
+/* "Read Article" 链接样式 */
 .read-more-link {
-  color: #58a6ff;
+  color: #0366d6;
   font-weight: 600;
   text-decoration: none;
   font-size: 0.95rem;
@@ -484,5 +481,4 @@ footer p + p {
 
 .read-more-link:hover {
   text-decoration: underline;
-  color: #79c0ff;
 }
