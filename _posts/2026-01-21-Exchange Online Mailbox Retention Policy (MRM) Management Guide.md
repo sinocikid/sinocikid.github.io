@@ -4,7 +4,7 @@
 
 ### View current retention policy assigned to mailbox
 ```powershell
-Get-Mailbox "user" | Select RetentionPolicy
+Get-Mailbox "user" | Select-Object RetentionPolicy
 ```
 
 ### Check if MRM processing is enabled
