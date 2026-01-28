@@ -290,8 +290,15 @@ nav a:hover {
 }
 
 /* ===================================
-   博客列表页面样式
+   博客列表页面样式 (blog.md)
    =================================== */
+
+/* 博客文章容器 */
+.posts-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
 
 /* 博客页面标题 */
 .blog-page-title {
@@ -303,6 +310,95 @@ nav a:hover {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+}
+
+/* 博客文章卡片样式 (用于 blog.md) */
+.posts-wrapper .post-card {
+    background: rgba(51, 65, 85, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(71, 85, 105, 0.7);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s;
+}
+
+.posts-wrapper .post-card:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 文章卡片头部 */
+.post-card-header {
+    margin-bottom: 0.75rem;
+}
+
+/* 日期元数据 */
+.post-meta-date {
+    color: #94a3b8;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.post-meta-date::before {
+    content: "📅";
+}
+
+/* 文章卡片标题 - 重点修复 */
+.post-card-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.post-card-title a {
+    color: #e2e8f0;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+/* 确保访问后不变色 */
+.post-card-title a:link,
+.post-card-title a:visited,
+.post-card-title a:active {
+    color: #e2e8f0;
+}
+
+.post-card-title a:hover {
+    color: #60a5fa;
+}
+
+/* 文章摘要 */
+.post-card-excerpt {
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* Read More 链接 */
+.read-more-link {
+    color: #60a5fa;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.read-more-link:link,
+.read-more-link:visited,
+.read-more-link:active {
+    color: #60a5fa;
+}
+
+.read-more-link:hover {
+    color: #93c5fd;
+    gap: 10px;
 }
 
 /* 简单的博客列表布局（垂直排列） */
