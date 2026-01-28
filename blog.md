@@ -4,16 +4,22 @@ title: Blog
 permalink: /blog/
 ---
 
-<ul>
+<div class="posts-wrapper">
   {% for post in site.posts %}
-    <li>
-      <h3>
+    <article class="post-card">
+      <div class="post-card-header">
+        <span class="post-meta-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+      </div>
+      
+      <h3 class="post-card-title">
         <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
       </h3>
-      <p class="post-meta">{{ post.date | date: "%Y-%m-%d" }}</p>
-      
-      <p>{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
-    </li>
-    <hr>
+
+      <p class="post-card-excerpt">
+        {{ post.excerpt | strip_html | truncatewords: 35 }}
+      </p>
+
+      <a href="{{ post.url | relative_url }}" class="read-more-link">Read Article →</a>
+    </article>
   {% endfor %}
-</ul>
+</div>
