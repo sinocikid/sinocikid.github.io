@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
     <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='15' fill='%233b82f6'/><text x='50' y='68' font-size='50' font-weight='bold' text-anchor='middle' fill='white' font-family='sans-serif'>AC</text></svg>">
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
     {% seo %}
     {% feed_meta %}
@@ -20,7 +21,12 @@
                         <p>Security Insights & Analysis</p>
                     </div>
                 </div>
-                <nav>
+                <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                    <span class="menu-bar"></span>
+                    <span class="menu-bar"></span>
+                    <span class="menu-bar"></span>
+                </button>
+                <nav id="main-nav">
                     <ul>
                         <li><a href="{{ '/' | relative_url }}">Home</a></li>
                         <li><a href="{{ '/blog' | relative_url }}">Blog</a></li>
@@ -39,5 +45,18 @@
             <p>Powered by Jekyll & GitHub Pages</p>
         </div>
     </footer>
+    <script>
+    (function() {
+        var toggle = document.querySelector('.menu-toggle');
+        var nav = document.getElementById('main-nav');
+        if (toggle && nav) {
+            toggle.addEventListener('click', function() {
+                var expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !expanded);
+                nav.classList.toggle('open');
+            });
+        }
+    })();
+    </script>
 </body>
 </html>

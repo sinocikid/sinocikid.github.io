@@ -1,4 +1,10 @@
-# Exchange Online Mailbox Retention Policy (MRM) Management Guide
+---
+title: "Exchange Online Mailbox Retention Policy (MRM) Management Guide"
+date: 2026-01-21
+categories: ["Office/Azure/Exchange"]
+tags: ["Exchange", "Office365", "PowerShell", "MRM"]
+read_time: 5
+---
 
 ## 1. Check Mailbox Retention Policy Configuration
 
@@ -79,7 +85,7 @@ Get-MailboxStatistics "user" | Select DisplayName,ElcLastRunTime,ElcLastSuccessT
 
 **Note:** The `ElcLastRunTime` field may not update in Exchange Online even when MRM is running normally
 
-### Check archive mailbox content (Most reliable verification method) ✅
+### Check archive mailbox content (Most reliable verification method)
 ```powershell
 Get-MailboxStatistics "user" -Archive | Select ItemCount,TotalItemSize
 ```

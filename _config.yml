@@ -12,19 +12,12 @@ email: # your-email@example.com (optional)
 
 # Build settings
 markdown: kramdown
-theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
 # Permalink structure
 permalink: /:year/:month/:day/:title/
-
-# Collections
-collections:
-  posts:
-    output: true
-    permalink: /blog/:year/:month/:day/:title/
 
 # Defaults
 defaults:

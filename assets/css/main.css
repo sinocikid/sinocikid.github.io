@@ -18,10 +18,19 @@ body {
     padding: 0 20px;
 }
 
-/* Header */
+/* Ensure visited links don't change color globally */
+a:visited {
+    color: inherit;
+}
+
+/* ===================================
+   Header
+   =================================== */
+
 header {
     background: rgba(15, 23, 42, 0.95);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(71, 85, 105, 0.5);
     position: sticky;
     top: 0;
@@ -70,6 +79,39 @@ header {
     margin: 0;
 }
 
+/* Mobile hamburger menu */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.menu-bar {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #cbd5e1;
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+.menu-toggle[aria-expanded="true"] .menu-bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle[aria-expanded="true"] .menu-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle[aria-expanded="true"] .menu-bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
 nav ul {
     display: flex;
     gap: 2rem;
@@ -86,7 +128,10 @@ nav a:hover {
     color: #60a5fa;
 }
 
-/* Hero Section */
+/* ===================================
+   Hero Section
+   =================================== */
+
 .hero {
     text-align: center;
     padding: 4rem 0;
@@ -133,7 +178,10 @@ nav a:hover {
     transform: translateY(-2px);
 }
 
-/* Category Filter */
+/* ===================================
+   Category Filter
+   =================================== */
+
 .category-filter {
     display: flex;
     flex-wrap: wrap;
@@ -160,27 +208,34 @@ nav a:hover {
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-/* Blog Posts Grid */
-.posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-}
+/* ===================================
+   Shared Card Styles
+   =================================== */
 
-.post-card {
+.post-card,
+.blog-list-item {
     background: rgba(51, 65, 85, 0.5);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(71, 85, 105, 0.7);
     border-radius: 12px;
     padding: 1.5rem;
     transition: all 0.3s;
 }
 
-.post-card:hover {
+.post-card:hover,
+.blog-list-item:hover {
     border-color: rgba(59, 130, 246, 0.5);
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Blog posts grid (homepage) */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
 }
 
 .post-card.featured {
@@ -204,17 +259,10 @@ nav a:hover {
     margin-bottom: 0.75rem;
 }
 
-/* 修复链接颜色问题 - 访问前后保持一致 */
 .post-title a {
     color: #e2e8f0;
     text-decoration: none;
     transition: color 0.3s;
-}
-
-.post-title a:link,
-.post-title a:visited,
-.post-title a:active {
-    color: #e2e8f0;
 }
 
 .post-title a:hover {
@@ -257,7 +305,9 @@ nav a:hover {
     transform: translateY(-1px);
 }
 
-.read-more {
+/* Read more link with arrow */
+.read-more,
+.read-more-link {
     color: #60a5fa;
     font-weight: 500;
     text-decoration: none;
@@ -268,20 +318,14 @@ nav a:hover {
     gap: 6px;
 }
 
-/* 确保 Read more 链接也不会变色 */
-.read-more:link,
-.read-more:visited,
-.read-more:active {
-    color: #60a5fa;
-}
-
-.read-more:hover {
+.read-more:hover,
+.read-more-link:hover {
     color: #93c5fd;
     gap: 10px;
 }
 
 .read-more::after {
-    content: "→";
+    content: "\2192";
     transition: transform 0.2s ease;
 }
 
@@ -290,17 +334,20 @@ nav a:hover {
 }
 
 /* ===================================
-   博客列表页面样式 (blog.md)
+   Blog List Page (blog.md)
    =================================== */
 
-/* 博客文章容器 */
 .posts-wrapper {
     max-width: 900px;
     margin: 0 auto;
     padding: 2rem 0;
 }
 
-/* 博客页面标题 */
+.posts-wrapper .post-card {
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
 .blog-page-title {
     font-size: 3rem;
     font-weight: 700;
@@ -312,29 +359,12 @@ nav a:hover {
     background-clip: text;
 }
 
-/* 博客文章卡片样式 (用于 blog.md) */
-.posts-wrapper .post-card {
-    background: rgba(51, 65, 85, 0.5);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(71, 85, 105, 0.7);
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    transition: all 0.3s;
-}
-
-.posts-wrapper .post-card:hover {
-    border-color: rgba(59, 130, 246, 0.5);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* 文章卡片头部 */
+/* Post card header */
 .post-card-header {
     margin-bottom: 0.75rem;
 }
 
-/* 日期元数据 */
+/* Date metadata */
 .post-meta-date {
     color: #94a3b8;
     font-size: 0.875rem;
@@ -344,10 +374,10 @@ nav a:hover {
 }
 
 .post-meta-date::before {
-    content: "📅";
+    content: "\1F4C5";
 }
 
-/* 文章卡片标题 - 重点修复 */
+/* Post card title */
 .post-card-title {
     font-size: 1.5rem;
     margin-bottom: 1rem;
@@ -360,48 +390,18 @@ nav a:hover {
     transition: color 0.3s;
 }
 
-/* 确保访问后不变色 */
-.post-card-title a:link,
-.post-card-title a:visited,
-.post-card-title a:active {
-    color: #e2e8f0;
-}
-
 .post-card-title a:hover {
     color: #60a5fa;
 }
 
-/* 文章摘要 */
+/* Post excerpt */
 .post-card-excerpt {
     color: #cbd5e1;
     line-height: 1.6;
     margin-bottom: 1rem;
 }
 
-/* Read More 链接 */
-.read-more-link {
-    color: #60a5fa;
-    font-weight: 500;
-    text-decoration: none;
-    font-size: 0.875rem;
-    transition: all 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.read-more-link:link,
-.read-more-link:visited,
-.read-more-link:active {
-    color: #60a5fa;
-}
-
-.read-more-link:hover {
-    color: #93c5fd;
-    gap: 10px;
-}
-
-/* 简单的博客列表布局（垂直排列） */
+/* Blog list layout (vertical) */
 .blog-list {
     max-width: 900px;
     margin: 0 auto;
@@ -409,19 +409,8 @@ nav a:hover {
 }
 
 .blog-list-item {
-    background: rgba(51, 65, 85, 0.5);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(71, 85, 105, 0.7);
-    border-radius: 12px;
     padding: 2rem;
     margin-bottom: 1.5rem;
-    transition: all 0.3s;
-}
-
-.blog-list-item:hover {
-    border-color: rgba(59, 130, 246, 0.5);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .blog-list-item .post-date {
@@ -434,7 +423,7 @@ nav a:hover {
 }
 
 .blog-list-item .post-date::before {
-    content: "📅";
+    content: "\1F4C5";
 }
 
 .blog-list-item h2 {
@@ -448,12 +437,6 @@ nav a:hover {
     transition: color 0.3s;
 }
 
-.blog-list-item h2 a:link,
-.blog-list-item h2 a:visited,
-.blog-list-item h2 a:active {
-    color: #e2e8f0;
-}
-
 .blog-list-item h2 a:hover {
     color: #60a5fa;
 }
@@ -464,7 +447,10 @@ nav a:hover {
     margin-bottom: 1rem;
 }
 
-/* Post Content */
+/* ===================================
+   Post Content (individual post page)
+   =================================== */
+
 .post-content {
     max-width: 800px;
     margin: 2rem auto;
@@ -574,7 +560,10 @@ nav a:hover {
     color: #93c5fd;
 }
 
-/* Footer */
+/* ===================================
+   Footer
+   =================================== */
+
 footer {
     border-top: 1px solid rgba(71, 85, 105, 0.5);
     margin-top: 5rem;
@@ -589,18 +578,34 @@ footer p + p {
 }
 
 /* ===================================
-   全局链接修复
+   Responsive
    =================================== */
 
-/* 确保所有链接在访问后不会变色 */
-a:visited {
-    color: inherit;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-    nav ul {
+    .menu-toggle {
+        display: flex;
+    }
+
+    #main-nav {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(71, 85, 105, 0.5);
+        padding: 1rem 20px;
+    }
+
+    #main-nav.open {
+        display: block;
+    }
+
+    #main-nav ul {
+        flex-direction: column;
+        gap: 1rem;
     }
 
     .hero h2 {
