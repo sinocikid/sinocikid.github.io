@@ -3,8 +3,25 @@ layout: default
 ---
 
 <article class="post-content">
+    {% if page.categories.size > 0 %}
+    <nav class="breadcrumb">
+        <a href="{{ '/' | relative_url }}">🏠 Home</a>
+        <span class="breadcrumb-separator">›</span>
+        {% for category in page.categories %}
+        <a href="{{ '/categories/' | relative_url }}#{{ category | slugify }}">{{ category }}</a>
+        {% unless forloop.last %}<span class="breadcrumb-separator">›</span>{% endunless %}
+        {% endfor %}
+    </nav>
+    {% endif %}
     <header class="post-header">
         <h1>{{ page.title }}</h1>
+        {% if page.categories.size > 0 %}
+        <div class="post-categories">
+            {% for category in page.categories %}
+            <a href="{{ '/categories/' | relative_url }}#{{ category | slugify }}" class="category-badge">{{ category }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
         <div class="post-meta">
             <span>📅 {{ page.date | date: "%B %d, %Y" }}</span>
             {% if page.read_time %}
