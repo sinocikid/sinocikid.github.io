@@ -15,6 +15,10 @@ I am a lifelong learner, constantly pushing my boundaries to stay ahead of the e
 * Core Interests: Red Teaming, CTF challenges, and system hardening.
 * Cloud & Infrastructure: Experienced in managing and securing environments across Azure and AWS.
 
+<div style="margin: 20px 0;">
+<iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=910267" style="border:none; max-width: 100%; height: auto;"></iframe>
+</div>
+
 ---
 
 ### 📜 Certifications
