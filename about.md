@@ -38,5 +38,6 @@ When I'm not auditing logs or testing vulnerabilities, I'm usually tinkering in 
 I'm always open to discussing new technologies, security trends, or automation projects.
 * Email: [me@andycyber.ca](mailto:me@andycyber.ca)
 * LinkedIn: [linkedin.com/in/sinocikid](https://linkedin.com/in/sinocikid)
+* X (Twitter): [@andycyberlife](https://x.com/andycyberlife)
 
 Feel free to reach out—let's build something secure!
