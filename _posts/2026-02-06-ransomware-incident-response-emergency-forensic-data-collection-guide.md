@@ -1,7 +1,7 @@
 ---
-title: "Ransomware Incident Response: Emergency Forensic Data Collection Guide" 
-date: 2026-02-06 
-author: "Andy" 
+title: "Ransomware Incident Response: Emergency Forensic Data Collection Guide"
+date: 2026-02-06
+author: "[REDACTED]" 
 categories: 
 - "Incident Response" 
 - "Digital Forensics" 
@@ -21,7 +21,7 @@ read_time: 20
 **Objective**: Preserve memory, processes, network connections and other volatile data for post-incident analysis  
 **Criticality**: ⭐⭐⭐⭐⭐ This data is permanently lost once the system shuts down
 
-> **⚠️ BASED ON REAL INCIDENT**: This guide was developed during an actual enterprise ransomware investigation involving a zero-day threat (0/74 antivirus detection rate) with multi-stage attack components including a dropper, network exfiltration module (NScurl.dll), and credential harvesting capabilities. The infected endpoint (PHW-WRK-106) was part of a domain environment with exposed cleartext passwords on network shares, creating a perfect storm for lateral movement and data exfiltration.
+> **⚠️ BASED ON REAL INCIDENT**: This guide was developed during an actual enterprise ransomware investigation involving a zero-day threat (0/74 antivirus detection rate) with multi-stage attack components including a dropper, network exfiltration module (NScurl.dll), and credential harvesting capabilities. The infected endpoint ([HOSTNAME-1]) was part of a domain environment with exposed cleartext passwords on network shares, creating a perfect storm for lateral movement and data exfiltration.
 
 ---
 
@@ -29,8 +29,8 @@ read_time: 20
 
 ### Initial Detection
 - **Date**: February 6, 2026
-- **Endpoint**: PHW-WRK-106 (192.168.11.216)
-- **User**: Domain account Provital\MWilderdijk
+- **Endpoint**: [HOSTNAME-REDACTED] ([INTERNAL-IP])
+- **User**: Domain account [DOMAIN]\[USERNAME]
 - **Initial Alert**: EDR behavioral detection flagged suspicious file manipulation and process injection
 - **Threat Classification**: Ransomware with data exfiltration capabilities
 
@@ -49,7 +49,7 @@ Secondary Component: NScurl.dll (5 MB)
 └─ Purpose: C2 communication and data exfiltration
 
 Deployment Path:
-C:\Users\MWilderdijk\AppData\Roaming\FoodFormula\
+C:\Users\[USERNAME]\AppData\Roaming\FoodFormula\
 ├─ Food_Formula.exe (142.04 MB - unpacked main payload)
 ├─ uninstall.exe (52.28 KB - potential trigger/backdoor)
 ├─ d3dcompiler_47.dll, ffmpeg.dll, libEGL.dll, etc.
@@ -57,7 +57,7 @@ C:\Users\MWilderdijk\AppData\Roaming\FoodFormula\
 ```
 
 ### Compounding Factors
-1. **Credential Exposure**: Cleartext passwords stored in `R:\Passwords\Milton Passwords Updated June 02 2025.xlsx`
+1. **Credential Exposure**: Cleartext passwords stored in `R:\Passwords\[PASSWORD-FILE-REDACTED].xlsx`
 2. **Domain Environment**: Active Directory context enabling lateral movement
 3. **Detection Evasion**: Advanced techniques bypassing 74 major antivirus engines
 4. **Multi-Stage Attack**: Dropper → DLL loader → Final payload architecture
@@ -105,7 +105,7 @@ Operation: Double-click to run, auto-generates .raw memory image
 **Naming Convention**:
 ```
 [Hostname]_RAM_[YYYYMMDD_HHMMSS].raw
-Example: PHW-WRK-106_RAM_20260206_143022.raw
+Example: [HOSTNAME-1]_RAM_20260206_143022.raw
 ```
 
 **Estimated Time**: 5-15 minutes (depends on RAM size)  
@@ -190,7 +190,7 @@ schtasks /query /fo CSV /v > "$evidenceDir\schtasks_verbose.csv"
 
 > **Real Incident Finding**: Initial scans showed no obvious persistence mechanisms, which was suspicious for ransomware. Deeper analysis revealed:
 > 
-> 1. **Startup Folder**: `C:\Users\MWilderdijk\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\FoodFormula.lnk` pointing to `Food_Formula.exe`
+> 1. **Startup Folder**: `C:\Users\[USERNAME]\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\FoodFormula.lnk` pointing to `Food_Formula.exe`
 > 
 > 2. **Scheduled Task** (hidden): `\Microsoft\Windows\FoodFormula\Update` running daily at 3:00 AM with SYSTEM privileges
 > 
@@ -225,12 +225,12 @@ Get-WmiObject Win32_Service | Select-Object Name, DisplayName, PathName, StartMo
 
 ### File Metadata
 ```powershell
-Get-ChildItem "C:\Users\[Username]\AppData\Roaming\[MalwareDirectory]" -Recurse -Force | Select-Object FullName, Length, CreationTime, LastWriteTime, LastAccessTime, Attributes | Export-Csv "$evidenceDir\malware_files.csv" -NoTypeInformation
+Get-ChildItem "C:\Users\[USERNAME]\AppData\Roaming\[MalwareDirectory]" -Recurse -Force | Select-Object FullName, Length, CreationTime, LastWriteTime, LastAccessTime, Attributes | Export-Csv "$evidenceDir\malware_files.csv" -NoTypeInformation
 ```
 
 ### File Hashes (SHA256)
 ```powershell
-Get-ChildItem "C:\Users\[Username]\AppData\Roaming\[MalwareDirectory]" -Recurse -Force -File | Get-FileHash -Algorithm SHA256 | Export-Csv "$evidenceDir\malware_hashes.csv" -NoTypeInformation
+Get-ChildItem "C:\Users\[USERNAME]\AppData\Roaming\[MalwareDirectory]" -Recurse -Force -File | Get-FileHash -Algorithm SHA256 | Export-Csv "$evidenceDir\malware_hashes.csv" -NoTypeInformation
 ```
 
 **Uses**:
@@ -251,7 +251,7 @@ Get-ChildItem "C:\Users\[Username]\AppData\Roaming\[MalwareDirectory]" -Recurse 
 
 ### Recently Modified Files (Last 7 Days)
 ```powershell
-Get-ChildItem "C:\Users\[Username]" -Recurse -Force -ErrorAction SilentlyContinue | Where-Object {$_.LastWriteTime -gt (Get-Date).AddDays(-7)} | Sort-Object LastWriteTime | Select-Object FullName, Length, LastWriteTime | Export-Csv "$evidenceDir\recent_user_activity.csv" -NoTypeInformation
+Get-ChildItem "C:\Users\[USERNAME]" -Recurse -Force -ErrorAction SilentlyContinue | Where-Object {$_.LastWriteTime -gt (Get-Date).AddDays(-7)} | Sort-Object LastWriteTime | Select-Object FullName, Length, LastWriteTime | Export-Csv "$evidenceDir\recent_user_activity.csv" -NoTypeInformation
 ```
 
 **Analytical Value**:
@@ -262,10 +262,10 @@ Get-ChildItem "C:\Users\[Username]" -Recurse -Force -ErrorAction SilentlyContinu
 > **Real Incident Finding**: Timeline analysis revealed:
 > 
 > ```
-> 2026-02-03 12:02:58 - User accessed R:\Passwords\Milton Passwords Updated June 02 2025.xlsx
+> 2026-02-03 12:02:58 - User accessed R:\Passwords\[PASSWORD-FILE-REDACTED].xlsx
 > 2026-02-06 04:16:28 - FoodFormula_677986.exe first appeared in Downloads
 > 2026-02-06 04:16:30 - Food_Formula.exe executed from AppData\Roaming
-> 2026-02-06 04:17:15 - Mass file access on C:\Users\MWilderdijk\Documents (potential encryption test)
+> 2026-02-06 04:17:15 - Mass file access on C:\Users\[USERNAME]\Documents (potential encryption test)
 > 2026-02-06 04:18:00 - Network share R:\ accessed (credential file exfiltration suspected)
 > ```
 > 
@@ -305,7 +305,7 @@ wevtutil epl "Microsoft-Windows-PowerShell/Operational" "$evidenceDir\PowerShell
 > ```
 > 
 > **Event ID 4624** (Logon) revealed:
-> - User MWilderdijk had 47 successful network logons in 6 hours (normal: 5-10 per day)
+> - User [USERNAME] had 47 successful network logons in 6 hours (normal: 5-10 per day)
 > - Source IPs included other workstations, suggesting compromised credentials used for lateral movement
 > 
 > **Event ID 5156** (Network Connection):
@@ -417,7 +417,7 @@ Get-ComputerInfo | Out-File "$evidenceDir\computerinfo.txt"
 > ```
 > OS: Windows 10 Pro 19043 (21H1)
 > Last Windows Update: 2025-11-12 (89 days outdated!)
-> Domain: PROVITAL.LOCAL
+> Domain: [DOMAIN-REDACTED]
 > Installed Software: 247 applications
 > Missing Critical Patches:
 > - CVE-2025-12345 (Privilege Escalation)
@@ -439,7 +439,7 @@ Get-EventLog -LogName Security -InstanceId 4624,4625 -Newest 1000 | Where-Object
 
 ### Find Suspicious File Encryption Activity
 ```powershell
-Get-ChildItem "C:\Users\[Username]" -Recurse -File -ErrorAction SilentlyContinue | Where-Object {$_.LastWriteTime -gt (Get-Date).AddHours(-24) -and $_.Extension -match '\.(encrypted|locked|crypto|[A-Z0-9]{6,})$'} | Select-Object FullName, Length, LastWriteTime
+Get-ChildItem "C:\Users\[USERNAME]" -Recurse -File -ErrorAction SilentlyContinue | Where-Object {$_.LastWriteTime -gt (Get-Date).AddHours(-24) -and $_.Extension -match '\.(encrypted|locked|crypto|[A-Z0-9]{6,})$'} | Select-Object FullName, Length, LastWriteTime
 ```
 
 ### Find SMB Network Activity
@@ -452,9 +452,9 @@ Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Smbclient/Security'; 
 > SMB activity logs revealed the attack spread to 3 additional endpoints:
 > 
 > ```
-> 2026-02-06 05:23:15 - \\PHW-WRK-107\C$ accessed from PHW-WRK-106
-> 2026-02-06 05:24:01 - \\PHW-WRK-108\C$ accessed from PHW-WRK-106  
-> 2026-02-06 05:25:33 - \\PHW-WRK-109\C$ accessed from PHW-WRK-106
+> 2026-02-06 05:23:15 - \\[HOSTNAME-2]\C$ accessed from [HOSTNAME-1]
+> 2026-02-06 05:24:01 - \\[HOSTNAME-3]\C$ accessed from [HOSTNAME-1]  
+> 2026-02-06 05:25:33 - \\[HOSTNAME-4]\C$ accessed from [HOSTNAME-1]
 > ```
 > 
 > **Method**: PsExec-style lateral movement using compromised credentials from `R:\Passwords\`
@@ -515,16 +515,16 @@ Create file `$evidenceDir\chain_of_custody.txt`:
 CHAIN OF CUSTODY RECORD
 ========================
 Incident ID: [INC-2026-0206-001]
-Hostname: [PHW-WRK-106]
-IP Address: [192.168.11.216]
-User Account: [Provital\MWilderdijk]
+Hostname: [[HOSTNAME-1]]
+IP Address: [[INTERNAL-IP]]
+User Account: [[DOMAIN]\[USERNAME]]
 
 Collected By: [Your Name]
 Collection Date/Time: [2026-02-06 14:30:22 UTC]
 Collection Method: PowerShell automated forensic script v2.1
 
 Evidence Storage:
-- Original Location: C:\Evidence_20260206_143022\
+- Original Location: C:\Evidence_[TIMESTAMP]\
 - Backup Location: [External Drive Serial: WD-ABC123XYZ456]
 - Access Permissions: Authorized IR personnel only
 - Custodian: [IR Team Lead Name]
@@ -802,7 +802,7 @@ This guide was developed during an actual enterprise ransomware incident respons
 - The IR team who worked 72+ hours straight to contain the incident
 - External consultants from [Redacted IR Firm] who provided expertise
 - Management for transparency and support during crisis response
-- The affected user (MWilderdijk) who cooperated fully with the investigation
+- The affected user who cooperated fully with the investigation
 
 ---
 
