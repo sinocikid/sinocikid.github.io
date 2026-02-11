@@ -56,7 +56,7 @@ Get-RetentionPolicy "PolicyName" | Select -ExpandProperty RetentionPolicyTagLink
 ```
 
 **Key Field Explanations:**
-- `AgeLimitForRetention`: Retention period (e.g., `365.00:00:00` = 365 days ≈ 1 years)
+- `AgeLimitForRetention`: Retention period (e.g., `365.00:00:00` = 365 days ≈ 1 year)
 - `RetentionAction`: Action type (`MoveToArchive` = Move to archive, `DeleteAndAllowRecovery` = Delete)
 - `Type`: Scope (`All` = All items)
 
