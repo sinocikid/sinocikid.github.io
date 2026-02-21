@@ -5,8 +5,6 @@ categories: ["AI Digest"]
 tags: ["AI", "Daily Digest", "Roundup"]
 ---
 
-
-
 > Curated from 92 top technical blogs recommended by Karpathy, AI-selected Top 13
 
 ## 📝 Today's Highlights
