@@ -1,3 +1,5 @@
+encoding: utf-8
+
 # Site settings
 title: AndyCyberLife
 description: Cybersecurity professional sharing insights on threat analysis, security tools, industry trends, and practical defense strategies.
@@ -35,3 +37,4 @@ exclude:
   - Gemfile.lock
   - README.md
   - vendor/
+  
