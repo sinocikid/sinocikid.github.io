@@ -1,5 +1,5 @@
 ---
-title: "📰 AI Daily Digest — 2026-02-26"
+title: "AI Daily Digest — 2026-02-26"
 date: 2026-02-26
 categories: ["AI Digest"]
 tags: ["AI", "Daily Digest", "Roundup"]
