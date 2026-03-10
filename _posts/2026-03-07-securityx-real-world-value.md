@@ -1,3 +1,20 @@
+---
+title: "CompTIA SecurityX: Real-World Value for Security Practitioners"
+date: 2026-03-07
+author: "[REDACTED]"
+categories:
+- "Certifications"
+- "Security Engineering"
+tags:
+- "SecurityX"
+- "CASP+"
+- "CompTIA"
+- "career"
+- "security-architecture"
+description: "Beyond the cert — what SecurityX actually does for your day-to-day work as a security practitioner."
+read_time: 8
+---
+
 # CompTIA SecurityX: Real-World Value for Security Practitioners
 
 > *Beyond the cert — what SecurityX actually does for your day-to-day work*
