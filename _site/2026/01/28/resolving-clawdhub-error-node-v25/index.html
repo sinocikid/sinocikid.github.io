@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25) - AndyCyberLife</title>
+    <meta name="description" content="Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25)">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='15' fill='%233b82f6'/><text x='50' y='68' font-size='50' font-weight='bold' text-anchor='middle' fill='white' font-family='sans-serif'>AC</text></svg>">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25) | AndyCyberLife</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25)" />
+<meta name="author" content="Andy" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25)" />
+<meta property="og:description" content="Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25)" />
+<link rel="canonical" href="https://andycyber.ca/2026/01/28/resolving-clawdhub-error-node-v25/" />
+<meta property="og:url" content="https://andycyber.ca/2026/01/28/resolving-clawdhub-error-node-v25/" />
+<meta property="og:site_name" content="AndyCyberLife" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-01-28T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25)" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Andy"},"dateModified":"2026-01-28T00:00:00-07:00","datePublished":"2026-01-28T00:00:00-07:00","description":"Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25)","headline":"Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25)","mainEntityOfPage":{"@type":"WebPage","@id":"https://andycyber.ca/2026/01/28/resolving-clawdhub-error-node-v25/"},"url":"https://andycyber.ca/2026/01/28/resolving-clawdhub-error-node-v25/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link type="application/atom+xml" rel="alternate" href="https://andycyber.ca/feed.xml" title="AndyCyberLife" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">AC</div>
+                    <div class="logo-text">
+                        <h1><a href="/">AndyCyberLife</a></h1>
+                        <p>Security Insights & Analysis</p>
+                    </div>
+                </div>
+                <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                    <span class="menu-bar"></span>
+                    <span class="menu-bar"></span>
+                    <span class="menu-bar"></span>
+                </button>
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/categories">Categories</a></li>
+                        <li><a href="/about">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main class="container">
+        <article class="post-content">
+    
+    <header class="post-header">
+        <h1>Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25)</h1>
+        
+        <div class="post-meta">
+            <span>📅 January 28, 2026</span>
+            
+            
+            <span>✍️ Andy</span>
+            
+        </div>
+        
+        <div class="post-tags">
+            
+            <span class="tag">#Node.js</span>
+            
+            <span class="tag">#Troubleshooting</span>
+            
+            <span class="tag">#DevTools</span>
+            
+            <span class="tag">#Clawdhub</span>
+            
+        </div>
+        
+    </header>
+    <div class="post-body">
+        <h1 id="technical-note-resolving-err_module_not_found-in-clawdhub-nodejs-v25">Technical Note: Resolving <code class="language-plaintext highlighter-rouge">ERR_MODULE_NOT_FOUND</code> in <code class="language-plaintext highlighter-rouge">clawdhub</code> (Node.js v25)</h1>
+
+<h2 id="tldr">TL;DR</h2>
+<p>If <code class="language-plaintext highlighter-rouge">npx clawdhub</code> crashes on Node.js v25 with a <code class="language-plaintext highlighter-rouge">Cannot find package 'undici'</code> error, the quickest fix is to manually inject the dependency:</p>
+<ol>
+  <li>Navigate to the installed package directory: <code class="language-plaintext highlighter-rouge">cd .../lib/node_modules/clawdhub</code></li>
+  <li>Run <code class="language-plaintext highlighter-rouge">npm install undici</code></li>
+</ol>
+
+<hr />
+
+<h2 id="issue-overview">Issue Overview</h2>
+<p>When attempting to initialize <code class="language-plaintext highlighter-rouge">clawdhub</code> via <code class="language-plaintext highlighter-rouge">npx</code> on a macOS environment running the latest Node.js release (v25.4.0), the process terminates immediately with a module resolution error. The runtime fails to locate the <code class="language-plaintext highlighter-rouge">undici</code> package, which is required by the tool’s HTTP module.</p>
+
+<h2 id="environment">Environment</h2>
+<ul>
+  <li><strong>OS:</strong> macOS (Apple Silicon)</li>
+  <li><strong>Runtime:</strong> Node.js v25.4.0</li>
+  <li><strong>Tool:</strong> <code class="language-plaintext highlighter-rouge">clawdhub</code> (invoked via <code class="language-plaintext highlighter-rouge">npx</code>)</li>
+</ul>
+
+<h2 id="error-stack-trace">Error Stack Trace</h2>
+<p>```bash
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package ‘undici’ imported from /Users/[user]/.nvm/versions/node/v25.4.0/lib/node_modules/clawdhub/dist/http.js
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:316:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    …
+    code: ‘ERR_MODULE_NOT_FOUND’</p>
+
+    </div>
+    <footer class="post-footer">
+        <div class="post-navigation">
+            
+            <a href="/2026/01/21/outlook-classic-essential-keyboard-shortcuts.md/" class="prev-post">← Outlook Classic: Essential Keyboard Shortcuts</a>
+            
+            
+            <a href="/2026/01/28/resolving-clawdhub-error-node-v25.md/" class="next-post">Technical Note: Resolving ERR_MODULE_NOT_FOUND in clawdhub (Node.js v25) →</a>
+            
+        </div>
+        <div class="back-to-home">
+            <a href="/">← Back to Home</a>
+        </div>
+    </footer>
+</article>
+
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 AndyCyberLife. All rights reserved.</p>
+            <p>Powered by Jekyll & GitHub Pages</p>
+        </div>
+    </footer>
+    <script>
+    (function() {
+        var toggle = document.querySelector('.menu-toggle');
+        var nav = document.getElementById('main-nav');
+        if (toggle && nav) {
+            toggle.addEventListener('click', function() {
+                var expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !expanded);
+                nav.classList.toggle('open');
+            });
+        }
+    })();
+    </script>
+</body>
+</html>

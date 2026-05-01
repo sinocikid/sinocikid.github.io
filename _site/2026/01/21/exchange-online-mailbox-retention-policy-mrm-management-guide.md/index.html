@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Online Mailbox Retention Policy (MRM) Management Guide - AndyCyberLife</title>
+    <meta name="description" content="## 1. Check Mailbox Retention Policy Configuration">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='15' fill='%233b82f6'/><text x='50' y='68' font-size='50' font-weight='bold' text-anchor='middle' fill='white' font-family='sans-serif'>AC</text></svg>">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Exchange Online Mailbox Retention Policy (MRM) Management Guide | AndyCyberLife</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Exchange Online Mailbox Retention Policy (MRM) Management Guide" />
+<meta name="author" content="Andy" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="1. Check Mailbox Retention Policy Configuration" />
+<meta property="og:description" content="1. Check Mailbox Retention Policy Configuration" />
+<link rel="canonical" href="https://andycyber.ca/2026/01/21/exchange-online-mailbox-retention-policy-mrm-management-guide.md/" />
+<meta property="og:url" content="https://andycyber.ca/2026/01/21/exchange-online-mailbox-retention-policy-mrm-management-guide.md/" />
+<meta property="og:site_name" content="AndyCyberLife" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-01-21T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Exchange Online Mailbox Retention Policy (MRM) Management Guide" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Andy"},"dateModified":"2026-01-21T00:00:00-07:00","datePublished":"2026-01-21T00:00:00-07:00","description":"1. Check Mailbox Retention Policy Configuration","headline":"Exchange Online Mailbox Retention Policy (MRM) Management Guide","mainEntityOfPage":{"@type":"WebPage","@id":"https://andycyber.ca/2026/01/21/exchange-online-mailbox-retention-policy-mrm-management-guide.md/"},"url":"https://andycyber.ca/2026/01/21/exchange-online-mailbox-retention-policy-mrm-management-guide.md/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link type="application/atom+xml" rel="alternate" href="https://andycyber.ca/feed.xml" title="AndyCyberLife" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">AC</div>
+                    <div class="logo-text">
+                        <h1><a href="/">AndyCyberLife</a></h1>
+                        <p>Security Insights & Analysis</p>
+                    </div>
+                </div>
+                <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                    <span class="menu-bar"></span>
+                    <span class="menu-bar"></span>
+                    <span class="menu-bar"></span>
+                </button>
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/categories">Categories</a></li>
+                        <li><a href="/about">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main class="container">
+        <article class="post-content">
+    
+    <nav class="breadcrumb">
+        <a href="/">🏠 Home</a>
+        <span class="breadcrumb-separator">›</span>
+        
+        <a href="/categories/#office-azure-exchange">Office/Azure/Exchange</a>
+        
+        
+    </nav>
+    
+    <header class="post-header">
+        <h1>Exchange Online Mailbox Retention Policy (MRM) Management Guide</h1>
+        
+        <div class="post-categories">
+            
+            <a href="/categories/#office-azure-exchange" class="category-badge">Office/Azure/Exchange</a>
+            
+        </div>
+        
+        <div class="post-meta">
+            <span>📅 January 21, 2026</span>
+            
+            <span>⏱️ 5 min read</span>
+            
+            
+            <span>✍️ Andy</span>
+            
+        </div>
+        
+        <div class="post-tags">
+            
+            <span class="tag">#Exchange</span>
+            
+            <span class="tag">#Office365</span>
+            
+            <span class="tag">#PowerShell</span>
+            
+            <span class="tag">#MRM</span>
+            
+        </div>
+        
+    </header>
+    <div class="post-body">
+        ## 1. Check Mailbox Retention Policy Configuration
+
+### View current retention policy assigned to mailbox
+```powershell
+Get-Mailbox "user" | Select-Object RetentionPolicy
+```
+
+### Check if MRM processing is enabled
+```powershell
+Get-Mailbox "user" | Select ElcProcessingDisabled
+```
+- Returns `False` = Enabled (normal)
+- Returns `True` = Disabled (needs to be enabled)
+
+### Check mailbox archive status
+```powershell
+Get-Mailbox "user" | Select ArchiveStatus,ArchiveName
+```
+- `ArchiveStatus: Active` = Archive enabled
+- `ArchiveStatus: None` = Archive needs to be enabled
+
+---
+
+## 2. Configure Retention Policy and Archive
+
+### Assign retention policy to mailbox
+```powershell
+Set-Mailbox "user" -RetentionPolicy "PolicyName"
+```
+
+### Enable mailbox archive
+```powershell
+Enable-Mailbox "user" -Archive
+```
+
+---
+
+## 3. View Retention Policy Details
+
+### View retention tags linked to policy
+```powershell
+Get-RetentionPolicy "PolicyName" | Select Name,RetentionPolicyTagLinks
+```
+
+### View detailed retention tag rules (Important)
+```powershell
+Get-RetentionPolicy "PolicyName" | Select -ExpandProperty RetentionPolicyTagLinks | ForEach-Object {Get-RetentionPolicyTag $_ | Select Name,Type,AgeLimitForRetention,RetentionAction,RetentionEnabled}
+```
+
+**Key Field Explanations:**
+- `AgeLimitForRetention`: Retention period (e.g., `365.00:00:00` = 365 days ≈ 1 year)
+- `RetentionAction`: Action type (`MoveToArchive` = Move to archive, `DeleteAndAllowRecovery` = Delete)
+- `Type`: Scope (`All` = All items)
+
+---
+
+## 4. Manually Trigger MRM Processing (Very Important)
+
+### Immediately trigger Managed Folder Assistant
+```powershell
+Start-ManagedFolderAssistant "user"
+```
+
+**Notes:**
+- Exchange Online automatically runs MRM every 7 days by default
+- This command triggers processing immediately without waiting
+- Wait 15-60 minutes after execution to see results
+
+---
+
+## 5. Verify MRM Running Status
+
+### Check MRM last run time (may not be accurate)
+```powershell
+Get-MailboxStatistics "user" | Select DisplayName,ElcLastRunTime,ElcLastSuccessTimeStamp
+```
+
+**Note:** The `ElcLastRunTime` field may not update in Exchange Online even when MRM is running normally
+
+### Check archive mailbox content (Most reliable verification method)
+```powershell
+Get-MailboxStatistics "user" -Archive | Select ItemCount,TotalItemSize
+```
+
+**This is the best way to verify MRM is working:**
+- Run this command periodically
+- If `ItemCount` and `TotalItemSize` increase, items are being archived
+- More reliable than `ElcLastRunTime`
+
+### Check primary mailbox statistics
+```powershell
+Get-MailboxStatistics "user" | Select ItemCount,TotalItemSize,LastLogonTime
+```
+
+---
+
+## Troubleshooting Workflow
+
+### Issue: MRM appears not to be running
+
+1. Check if retention policy is assigned
+2. Verify `ElcProcessingDisabled` is `False`
+3. Check if archive mailbox is enabled
+4. Manually trigger `Start-ManagedFolderAssistant`
+5. Wait 30-60 minutes and check archive mailbox item count
+
+### Issue: `ElcLastRunTime` remains empty
+
+- **This is normal behavior** and doesn't mean MRM isn't running
+- Use `Get-MailboxStatistics -Archive` to verify by checking archive growth
+
+### Issue: No items being archived
+
+- Check the retention policy's `AgeLimitForRetention` (retention days)
+- Confirm primary mailbox contains items older than the age limit
+- Use `Get-MailboxFolderStatistics -IncludeOldestAndNewestItems` to view oldest item dates
+
+---
+
+## Best Practices
+
+1. **Monitor archive growth regularly** instead of relying on `ElcLastRunTime`
+2. **Manually trigger immediately after assigning new policy** using `Start-ManagedFolderAssistant`
+3. **Regularly check archive mailbox capacity** to avoid quota exceeded
+4. **Document retention policy rules** to ensure compliance requirements are met
+
+    </div>
+    <footer class="post-footer">
+        <div class="post-navigation">
+            
+            <a href="/2026/01/21/exchange-online-mailbox-retention-policy-mrm-management-guide/" class="prev-post">← Exchange Online Mailbox Retention Policy (MRM) Management Guide</a>
+            
+            
+            <a href="/2026/01/21/outlook-classic-essential-keyboard-shortcuts/" class="next-post">Outlook Classic: Essential Keyboard Shortcuts →</a>
+            
+        </div>
+        <div class="back-to-home">
+            <a href="/">← Back to Home</a>
+        </div>
+    </footer>
+</article>
+
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 AndyCyberLife. All rights reserved.</p>
+            <p>Powered by Jekyll & GitHub Pages</p>
+        </div>
+    </footer>
+    <script>
+    (function() {
+        var toggle = document.querySelector('.menu-toggle');
+        var nav = document.getElementById('main-nav');
+        if (toggle && nav) {
+            toggle.addEventListener('click', function() {
+                var expanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !expanded);
+                nav.classList.toggle('open');
+            });
+        }
+    })();
+    </script>
+</body>
+</html>
